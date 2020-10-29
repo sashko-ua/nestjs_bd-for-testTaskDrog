@@ -5,15 +5,19 @@ import { Photo } from './photo.entity';
 
 @Injectable()
 export class PhotoService {
-
+    private readonly photo: Photo[] = [];
     constructor(
         @InjectRepository(Photo)
         private photosRepository: Repository<Photo>,
         private connection: Connection
     ) { }
 
-    findAll(): Promise<Photo[]> {
-        return this.photosRepository.find();
+    // findAll(): Promise<Photo[]> {
+    //     return this.photosRepository.find();
+    // }
+
+    findAll(): Photo[] {
+        return this.photo;
     }
 
     findOne(id: string): Promise<Photo> {
@@ -30,8 +34,8 @@ export class PhotoService {
         await queryRunner.connect();
         await queryRunner.startTransaction();
         try {
-            // await queryRunner.manager.save(photos[0]);
-            // await queryRunner.manager.save(photos[1]);
+            await queryRunner.manager.save('lol');
+            await queryRunner.manager.save('hi');
 
             await queryRunner.commitTransaction();
         } catch (err) {
@@ -42,4 +46,21 @@ export class PhotoService {
             await queryRunner.release();
         }
     }
+
+    create(photo: Photo) {
+        this.photo.push(photo);
+    }
 }
+
+// @Injectable()
+// export class PhotoService {
+//     private readonly items: string[] = ['Pizza', 'Coke'];
+
+//     findAll(): string[] {
+//         return this.items;
+//     }
+
+//     create(item: string) {
+//         this.items.push(item);
+//     }
+// }
